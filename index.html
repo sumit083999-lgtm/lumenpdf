@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LumenPDF Pro</title>
+    <!-- Tailwind CSS for Modern Premium UI -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- jsPDF Library for Core PDF Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        /* Premium Glowing Effects */
+        .premium-border {
+            border: 1px solid rgba(255, 193, 7, 0.2);
+            transition: all 0.3s ease;
+        }
+        .premium-border:hover {
+            border-color: rgba(255, 193, 7, 0.6);
+            box-shadow: 0 0 15px rgba(255, 193, 7, 0.1);
+        }
+        .gold-glow {
+            text-shadow: 0 0 10px rgba(255, 193, 7, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-[#0A0A0A] text-gray-200 font-sans min-h-screen flex flex-col justify-between">
+
+    <!-- Header -->
+    <header class="border-b border-gray-900 bg-[#111111] px-6 py-4 flex items-center justify-between shadow-xl">
+        <div class="flex items-center gap-3">
+            <!-- App Icon/Logo Shape -->
+            <div class="w-9 h-9 bg-[#FFC107] rounded-lg flex items-center justify-center font-bold text-[#0A0A0A] text-lg shadow-lg shadow-[#FFC107]/20">
+                L
+            </div>
+            <h1 class="text-xl font-bold tracking-wider text-white gold-glow">Lumen<span class="text-[#FFC107]">PDF Pro</span></h1>
+        </div>
+        <span class="text-xs bg-amber-500/10 text-[#FFC107] border border-amber-500/20 px-2.5 py-1 rounded-full font-medium">v1.0 Premium</span>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 max-w-xl w-full mx-auto p-6 flex flex-col justify-center gap-6">
+        
+        <!-- Upload Card -->
+        <div class="bg-[#121212] premium-border rounded-2xl p-6 text-center flex flex-col items-center gap-4 shadow-2xl">
+            <div class="w-16 h-16 bg-amber-500/5 rounded-full flex items-center justify-center border border-amber-500/10 mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-[#FFC107]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 002-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold text-white">Select Images to Convert</h3>
+                <p class="text-xs text-gray-500 mt-1">Upload JPG, PNG or WebP files from your storage</p>
+            </div>
+
+            <!-- Hidden File Input -->
+            <input type="file" id="imageInput" accept="image/*" multiple class="hidden" onchange="handleImageSelection()">
+            
+            <!-- Custom Trigger Button -->
+            <button onclick="document.getElementById('imageInput').click()" class="w-full mt-2 bg-[#1A1A1A] hover:bg-[#222222] text-gray-300 font-medium py-3 px-4 rounded-xl border border-gray-850 transition duration-200 cursor-pointer text-sm">
+                Choose Files
+            </button>
+        </div>
+
+        <!-- Preview & Status Section -->
+        <div id="statusCard" class="hidden bg-[#121212] border border-gray-900 rounded-2xl p-5 flex flex-col gap-4">
+            <div class="flex items-center justify-between border-b border-gray-900 pb-3">
+                <span class="text-xs font-semibold uppercase tracking-wider text-gray-500">Selected Files</span>
+                <span id="fileCount" class="text-xs bg-[#1A1A1A] text-white px-2.5 py-1 rounded-md border border-gray-800 font-bold">0 Files</span>
+            </div>
+            
+            <!-- Image Thumbnail Grid Previews -->
+            <div id="previewGrid" class="grid grid-cols-4 gap-3 max-h-40 overflow-y-auto pr-1"></div>
+        </div>
+
+        <!-- Action Button -->
+        <button id="convertBtn" disabled onclick="generatePDF()" class="w-full bg-gradient-to-r from-amber-500 to-[#FFC107] disabled:from-gray-800 disabled:to-gray-800 text-[#0A0A0A] disabled:text-gray-500 font-bold py-4 px-6 rounded-xl shadow-xl shadow-amber-500/5 disabled:shadow-none transition duration-300 transform active:scale-98 cursor-pointer disabled:cursor-not-allowed tracking-wide text-sm">
+            CONVERT TO PDF
+        </button>
+
+    </main>
+
+    <!-- Footer Security Badge -->
+    <footer class="p-6 text-center flex flex-col items-center gap-1">
+        <div class="flex items-center gap-1.5 text-xs text-gray-600">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-emerald-600" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944a11.954 11.954 0 007.834 3.056c.11.63.166 1.278.166 1.933a10.96 10.96 0 01-2.343 6.844.75.75 0 00.016 1.008 11.99 11.99 0 002.227 1.24.75.75 0 01.341 1.003A11.91 11.91 0 0110 18.056a11.91 11.91 0 01-8.241-4.033.75.75 0 01.341-1.003c.73-.34 1.48-.756 2.227-1.24a.75.75 0 00.016-1.008A10.96 10.96 0 012 6.932c0-.655.056-1.303.166-1.933zm7.834 2.445a.75.75 0 00-1.06 0l-2.5 2.5a.75.75 0 101.06 1.06L9 9.56v4.19a.75.75 0 001.5 0v-4.19l1.44 1.44a.75.75 0 101.06-1.06l-2.5-2.5z" clip-rule="evenodd" />
+            </svg>
+            <span>On-Device Processing • Your data never leaves your device</span>
+        </div>
+    </footer>
+
+    <!-- App Logic Script -->
+    <script>
+        let selectedFiles = [];
+
+        function handleImageSelection() {
+            const input = document.getElementById('imageInput');
+            const previewGrid = document.getElementById('previewGrid');
+            const statusCard = document.getElementById('statusCard');
+            const fileCountLabel = document.getElementById('fileCount');
+            const convertBtn = document.getElementById('convertBtn');
+
+            if (input.files.length === 0) return;
+
+            // Merge new files into our global array
+            const filesArray = Array.from(input.files);
+            selectedFiles = selectedFiles.concat(filesArray);
+
+            // Update UI State
+            fileCountLabel.innerText = `${selectedFiles.length} ${selectedFiles.length === 1 ? 'File' : 'Files'}`;
+            statusCard.classList.remove('hidden');
+            convertBtn.removeAttribute('disabled');
+
+            // Render Thumbnails dynamically
+            previewGrid.innerHTML = '';
+            selectedFiles.forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const thumbWrapper = document.createElement('div');
+                    thumbWrapper.className = 'relative aspect-square bg-[#1A1A1A] rounded-lg overflow-hidden border border-gray-800';
+                    thumbWrapper.innerHTML = `
+                        <img src="${e.target.result}" class="w-full h-full object-cover">
+                        <button onclick="removeImage(${index})" class="absolute top-1 right-1 w-5 h-5 bg-black/70 text-white text-xs rounded-full flex items-center justify-center font-bold hover:bg-red-600 transition">×</button>
+                    `;
+                    previewGrid.appendChild(thumbWrapper);
+                }
+                reader.readAsDataURL(file);
+            });
+            input.value = ''; // Reset input to allow re-uploading same file if deleted
+        }
+
+        function removeImage(index) {
+            selectedFiles.splice(index, 1);
+            
+            const statusCard = document.getElementById('statusCard');
+            const convertBtn = document.getElementById('convertBtn');
+            const fileCountLabel = document.getElementById('fileCount');
+
+            if (selectedFiles.length === 0) {
+                statusCard.classList.add('hidden');
+                convertBtn.setAttribute('disabled', 'true');
+            } else {
+                fileCountLabel.innerText = `${selectedFiles.length} ${selectedFiles.length === 1 ? 'File' : 'Files'}`;
+                // Re-render remaining elements safely
+                document.getElementById('imageInput').files = new DataTransfer().files; // clean dummy state
+                handleImageSelection(); 
+            }
+        }
+
+        async function generatePDF() {
+            if (selectedFiles.length === 0) return;
+
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF();
+            const convertBtn = document.getElementById('convertBtn');
+            
+            convertBtn.innerText = 'GENERATING PDF...';
+            convertBtn.setAttribute('disabled', 'true');
+
+            for (let i = 0; i < selectedFiles.length; i++) {
+                if (i > 0) pdf.addPage();
+                
+                await new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const img = new Image();
+                        img.src = e.target.result;
+                        img.onload = function() {
+                            const pageWidth = pdf.internal.pageSize.getWidth();
+                            const pageHeight = pdf.internal.pageSize.getHeight();
+                            
+                            // Math logic to perfectly scale the image to fit the layout page
+                            const imgWidth = img.width;
+                            const imgHeight = img.height;
+                            const ratio = Math.min(pageWidth / imgWidth, pageHeight / imgHeight);
+                            
+                            const newWidth = imgWidth * ratio;
+                            const newHeight = imgHeight * ratio;
+                            const xXis = (pageWidth - newWidth) / 2;
+                            const yXis = (pageHeight - newHeight) / 2;
+
+                            pdf.addImage(img, 'JPEG', xXis, yXis, newWidth, newHeight);
+                            resolve();
+                        };
+                    };
+                    reader.readAsDataURL(selectedFiles[i]);
+                });
+            }
+
+            pdf.save('LumenPDF_Document.pdf');
+            
+            // Restore conversion state back
+            convertBtn.innerText = 'CONVERT TO PDF';
+            convertBtn.removeAttribute('disabled');
+        }
+    </script>
+</body>
+</html>
