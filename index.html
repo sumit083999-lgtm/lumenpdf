@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- 🚀 SEO Meta Tags Added Below -->
+    <!-- 🚀 SEO Meta Tags -->
     <title>LumenPDF Pro - Free Photo to PDF Converter Online</title>
     <meta name="description" content="Convert your photos and images to high-quality PDF online for free. Support JPG, PNG, and WebP with absolute privacy. No app download required.">
     <meta name="keywords" content="photo to pdf, image to pdf, free pdf converter, convert jpg to pdf, online pdf maker, lumenpdf pro, no download pdf converter">
@@ -37,7 +37,6 @@
             <div class="w-9 h-9 bg-[#FFC107] rounded-lg flex items-center justify-center font-bold text-[#0A0A0A] text-lg shadow-lg shadow-[#FFC107]/20">
                 L
             </div>
-            <!-- 🚀 SEO Optimized Heading -->
             <h1 class="text-xl font-bold tracking-wider text-white gold-glow">Lumen<span class="text-[#FFC107]">PDF Pro</span></h1>
         </div>
         <span class="text-xs bg-amber-500/10 text-[#FFC107] border border-amber-500/20 px-2.5 py-1 rounded-full font-medium">v1.0 Premium</span>
@@ -79,7 +78,7 @@
             CONVERT TO PDF
         </button>
 
-        <!-- 🚀 SEO Content Section for Google Ranking -->
+        <!-- SEO Content Section -->
         <div class="bg-[#121212]/50 border border-gray-950 rounded-2xl p-4 text-xs text-gray-500 leading-relaxed">
             <p class="font-semibold text-gray-400 mb-1">Why use LumenPDF Pro?</p>
             Our secure online image to pdf converter ensures 100% data privacy because all processing happens directly inside your browser. Your private documents or photos are never uploaded to any server. Easily merge multiple JPG, PNG, or WebP files into a single optimized PDF file instantly without losing quality.
@@ -102,18 +101,12 @@
 
         function handleImageSelection() {
             const input = document.getElementById('imageInput');
-            const previewGrid = document.getElementById('previewGrid');
-            const statusCard = document.getElementById('statusCard');
-            const fileCountLabel = document.getElementById('fileCount');
-            const convertBtn = document.getElementById('convertBtn');
-
             if (input.files.length === 0) return;
 
             const filesArray = Array.from(input.files);
             selectedFiles = selectedFiles.concat(filesArray);
 
             updateUI();
-            input.value = '';
         }
 
         function updateUI() {
@@ -125,6 +118,7 @@
             if (selectedFiles.length === 0) {
                 statusCard.classList.add('hidden');
                 convertBtn.setAttribute('disabled', 'true');
+                document.getElementById('imageInput').value = ''; // Input clear clear
                 return;
             }
 
@@ -194,8 +188,9 @@
 
             pdf.save('LumenPDF_Document.pdf');
             
-            // 🚀 FIXED RESET LOGIC HERE
+            // 🔥 FULL COMPREHENSIVE RESET FOR MOBILE BROWSERS
             selectedFiles = []; 
+            document.getElementById('imageInput').value = ''; 
             updateUI(); 
             
             convertBtn.innerText = 'CONVERT TO PDF';
