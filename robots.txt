@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://sumit083999-lgtm.github.io/lumenpdf/sitemap.xml
